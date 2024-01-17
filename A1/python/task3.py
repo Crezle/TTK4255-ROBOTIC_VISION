@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from common import *
 
-threshold = 1 # todo: choose an appropriate value
-sigma     = 1 # todo: choose an appropriate value
+threshold = 2000 # todo: choose an appropriate value
+sigma     = 10 # todo: choose an appropriate value
 filename  = '../data/grid.jpg'
 
 I_rgb      = plt.imread(filename)
@@ -14,6 +14,9 @@ Ix, Iy, Im = central_difference(I_blur)
 x,y,theta  = extract_edges(Ix, Iy, Im, threshold)
 
 fig, axes = plt.subplots(1,5,figsize=[15,4], sharey='row')
+
+plt.suptitle(f'threshold = {threshold}, sigma = {sigma}')
+
 plt.set_cmap('gray')
 axes[0].imshow(I_blur)
 axes[1].imshow(Ix, vmin=-0.05, vmax=0.05)
