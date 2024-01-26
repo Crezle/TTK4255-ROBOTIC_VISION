@@ -28,9 +28,9 @@ N_theta        = 200
 
 #rho_max is distance from lower left to upper right corner of image
 rho_max   = np.sqrt(2 * I_rgb.shape[0]**2 * I_rgb.shape[1]**2)
-rho_min   = 0
-theta_min = -np.pi/2
-theta_max = np.pi/2
+rho_min   = -np.sqrt(2 * I_rgb.shape[0]**2 * I_rgb.shape[1]**2)
+theta_min = -np.pi
+theta_max = np.pi
 
 ###########################################
 #
@@ -43,12 +43,25 @@ H = np.zeros((N_rho, N_theta))
 # 1) Compute rho for each edge (x,y,theta)
 # Tip: You can do this without for-loops
 
+rho = np.sin(theta)*y + np.cos(theta)*x
+
 # 2) Convert to discrete row,column coordinates
 # Tip: Use np.floor(...).astype(np.int) to floor a number to an integer type
 
+rho_d = np.floor(N_rho * (rho - rho_min)/(rho_max - rho_min)).astype(np.int)
+theta_d = np.floor(N_theta * (theta - theta_min)/(theta_max - theta_min)).astype(np.int)
+
+assert 0 <= np.min(rho_d)
+assert np.max(rho_d) <= N_rho
+assert 0 <= np.min(theta_d)
+assert np.max(theta_d) <= N_theta
+assert len(rho_d) == len(theta_d)
 # 3) Increment H[row,column]
 # Tip: Make sure that you don't try to access values at indices outside
 # the valid range: [0,N_rho-1] and [0,N_theta-1]
+
+for i in range(len(rho_d)):
+    H[rho_d[i]][theta_d[i]] = H[rho_d[i]][theta_d[i]] + 1
 
 ###########################################
 #
