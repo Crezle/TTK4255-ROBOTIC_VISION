@@ -25,10 +25,12 @@ N_theta        = 200
 # Tip: theta is computed using np.arctan2. Check that the
 # range of values returned by arctan2 matches your chosen
 # ranges (check np.info(np.arctan2) or the internet docs).
-rho_max   = 500 # Placeholder value
-rho_min   = -100 # Placeholder value
-theta_min = -1 # Placeholder value
-theta_max = +1 # Placeholder value
+
+#rho_max is distance from lower left to upper right corner of image
+rho_max   = np.sqrt(2 * I_rgb.shape[0]**2 * I_rgb.shape[1]**2)
+rho_min   = 0
+theta_min = -np.pi/2
+theta_max = np.pi/2
 
 ###########################################
 #
