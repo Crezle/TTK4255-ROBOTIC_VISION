@@ -5,7 +5,7 @@ from common import *
 # This bit of code is from HW1.
 edge_threshold = 0.015
 blur_sigma     = 1
-filename       = '../data/grid.jpg'
+filename       = 'data/grid.jpg'
 I_rgb          = plt.imread(filename)
 I_rgb          = im2double(I_rgb) #Ensures that the image is in floating-point with pixel values in [0,1].
 I_gray         = rgb_to_gray(I_rgb)
@@ -13,9 +13,9 @@ Ix, Iy, Im     = derivative_of_gaussian(I_gray, sigma=blur_sigma)
 x,y,theta      = extract_edges(Ix, Iy, Im, edge_threshold)
 
 # You can adjust these for better results
-line_threshold = 0.2
-N_rho          = 200
-N_theta        = 200
+line_threshold = 0.25
+N_rho          = 400
+N_theta        = 400
 
 ###########################################
 #
@@ -27,8 +27,8 @@ N_theta        = 200
 # ranges (check np.info(np.arctan2) or the internet docs).
 
 #rho_max is distance from lower left to upper right corner of image
-rho_max   = np.sqrt(2 * I_rgb.shape[0]**2 * I_rgb.shape[1]**2)
-rho_min   = -np.sqrt(2 * I_rgb.shape[0]**2 * I_rgb.shape[1]**2)
+rho_max   = 900
+rho_min   = -900
 theta_min = -np.pi
 theta_max = np.pi
 
@@ -48,8 +48,8 @@ rho = np.sin(theta)*y + np.cos(theta)*x
 # 2) Convert to discrete row,column coordinates
 # Tip: Use np.floor(...).astype(np.int) to floor a number to an integer type
 
-rho_d = np.floor(N_rho * (rho - rho_min)/(rho_max - rho_min)).astype(np.int)
-theta_d = np.floor(N_theta * (theta - theta_min)/(theta_max - theta_min)).astype(np.int)
+rho_d = np.floor(N_rho * (rho - rho_min)/(rho_max - rho_min)).astype(np.int64)
+theta_d = np.floor(N_theta * (theta - theta_min)/(theta_max - theta_min)).astype(np.int64)
 
 assert 0 <= np.min(rho_d)
 assert np.max(rho_d) <= N_rho
@@ -70,9 +70,18 @@ for i in range(len(rho_d)):
 ###########################################
 # 1) Call extract_local_maxima
 
+row, col = extract_local_maxima(H, line_threshold)
+
 # 2) Convert (row, column) back to (rho, theta)
-maxima_rho = [100] # Placeholder
-maxima_theta = [0] # Placeholder
+
+maxima_rho = (row / N_rho) * (rho_max - rho_min) + rho_min
+maxima_theta = (col / N_theta) * (theta_max - theta_min) + theta_min
+
+assert rho_min <= np.min(maxima_rho)
+assert np.max(maxima_rho) <= rho_max
+assert theta_min <= np.min(maxima_theta)
+assert np.max(maxima_theta) <= theta_max
+assert len(maxima_rho) == len(maxima_theta)
 
 ###########################################
 #
