@@ -3,25 +3,43 @@ import numpy as np
 from common import *
 
 # Note: the sample image is naturally grayscale
-I = rgb_to_gray(im2double(plt.imread('../data/calibration.jpg')))
+I = rgb_to_gray(im2double(plt.imread('data/calibration.jpg')))
 
 ###########################################
 #
 # Task 3.1: Compute the Harris-Stephens measure
 #
 ###########################################
+response = np.zeros_like(I) # Placeholder
+
+rows = I.shape[0]
+cols = I.shape[1]
+
 sigma_D = 1
 sigma_I = 3
 alpha = 0.06
-response = np.zeros_like(I) # Placeholder
+
+Ix, Iy, Im = derivative_of_gaussian(I, sigma_D)
+Axx = gaussian(Ix**2, sigma_I)
+Ayy = gaussian(Iy**2, sigma_I)
+Axy = gaussian(Ix*Iy, sigma_I)
+
+A = np.array([[Axx, Axy],
+              [Axy, Ayy]])
+
+A = A.transpose(2, 3, 0, 1)
+
+response = np.array([[np.linalg.det(A[i, j]) - alpha*(np.trace(A[i, j])**2) for i in range(rows)] for j in range(cols)]).T
 
 ###########################################
 #
 # Task 3.4: Extract local maxima
 #
 ###########################################
-corners_y = [0] # Placeholder
-corners_x = [0] # Placeholder
+
+acc_threshold = 0.001
+
+corners_y, corners_x = extract_local_maxima(response, acc_threshold)
 
 ###########################################
 #
