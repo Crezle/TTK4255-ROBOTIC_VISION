@@ -1,10 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 from common import *
 
+# Create folder for plots
+path = "A4/plots/"
+if not os.path.exists(path):
+    os.makedirs(path)
 # Tip: Use np.loadtxt to load data into an array
-K = np.loadtxt('../data/task2K.txt')
-X = np.loadtxt('../data/task2points.txt')
+K = np.loadtxt('A4/data/task2K.txt')
+X = np.loadtxt('A4/data/task2points.txt')
 
 # Task 2.2: Implement the project function
 u,v = project(K, X)
@@ -26,4 +31,8 @@ plt.axis('image')     # This option ensures that pixels are square in the figure
                       # This must be called BEFORE setting xlim and ylim!
 plt.xlim([0, width])
 plt.ylim([height, 0]) # The reversed order flips the figure such that the y-axis points down
-plt.show()
+plt.savefig('A4/plots/task2-2_projection')
+if os.getenv("GITHUB_ACTIONS") != 'true':   
+    plt.show()
+else:
+    plt.clf()

@@ -1,0 +1,42 @@
+run-name: Build code
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          activate-environment: ttk4255
+          environment-file: environment.yml
+
+      - name: Check Conda Environment Status
+        run: |
+          conda info
+          conda list
+
+      - name: Run "A4, Task2.py"
+        run: python A4/python/task2.py
+
+      - name: Upload "A4" Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: A1-PlotsAndCode-${{ runner.os }}
+          path: |
+            A4/plots/**

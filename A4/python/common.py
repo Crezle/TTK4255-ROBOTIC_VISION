@@ -31,15 +31,12 @@ def project(K, X):
     using the camera intrinsic matrix K. Returns the dehomogenized
     pixel coordinates as an array of size 2xN.
     """
-
-    # Tip: Use the @ operator for matrix multiplication, the *
-    # operator on arrays performs element-wise multiplication!
-
-    #
-    # Placeholder code (replace with your implementation)
-    #
     N = X.shape[1]
     u = np.zeros([2,N])
+
+    u_tilde = K @ X
+    u = u_tilde[0:2, :] / u_tilde[2, :]
+
     return u
 
 def draw_frame(K, T, scale=1, labels=True):
