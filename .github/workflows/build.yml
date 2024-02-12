@@ -40,7 +40,7 @@ jobs:
       - name: Upload "A4" Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: A1-PlotsAndCode-${{ runner.os }}
+          name: A4-PlotsAndCode-${{ runner.os }}
           path: |
             A4/plots/**
             A4/*.zip
