@@ -33,6 +33,9 @@ def project(K, X):
     """
     N = X.shape[1]
     u = np.zeros([2,N])
+    
+    if X.shape[0] == 4:
+        X = X[0:3,:] / X[3,:]
 
     u_tilde = K @ X
     u = u_tilde[0:2, :] / u_tilde[2, :]

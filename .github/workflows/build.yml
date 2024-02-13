@@ -34,6 +34,12 @@ jobs:
       - name: Run "A4, Task2.py"
         run: python A4/python/task2.py
 
+      - name: Run "A4, Task3.py"
+        run: python A4/python/task3.py
+
+      - name: Run "A4, Task4.py"
+        run: python A4/python/task4.py
+
       - name: Create A4 Code .ZIP
         run: python A4/python/create_submission_zip.py
 

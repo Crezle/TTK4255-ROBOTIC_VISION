@@ -21,6 +21,8 @@ def query(question, options):
 # If you create other files, edit this list to include them in the .zip file.
 files_to_include = {
     "A4/python/task2": [".py"],
+    "A4/python/task3": [".py"],
+    "A4/python/task4": [".py"],
     "A4/python/common": [".py"],
 }
 zipfile_path = "A4/A4_code.zip"
