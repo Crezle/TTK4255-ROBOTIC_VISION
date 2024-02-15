@@ -1,7 +1,6 @@
 run-name: Build code
 
 on:
-  pull_request:
   push:
 
 jobs:
@@ -13,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
 
     steps:
       - name: Checkout code

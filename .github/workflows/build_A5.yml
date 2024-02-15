@@ -1,0 +1,45 @@
+run-name: Build code
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          activate-environment: ttk4255
+          environment-file: environment.yml
+
+      - name: Check Conda Environment Status
+        run: |
+          conda info
+          conda list
+
+      - name: Run "A5, Task22.py"
+        run: python A5/python/task22.py
+
+      - name: Create A5 Code .ZIP
+        run: python A5/python/create_submission_zip.py
+
+      - name: Upload "A5" Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: A5-PlotsAndCode-${{ runner.os }}
+          path: |
+            A5/plots/**
+            A5/*.zip
