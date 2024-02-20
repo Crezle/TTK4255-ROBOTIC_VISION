@@ -20,7 +20,9 @@ def query(question, options):
 
 # If you create other files, edit this list to include them in the .zip file.
 files_to_include = {
-    "A5/python/task22": [".py"],
+    "A5/python/task2": [".py"],
+    "A5/python/calibrate_camera": [".py"],
+    "A5/python/show_calibration_results": [".py"],
 }
 zipfile_path = "A5/A5_code.zip"
 print("-"*80)

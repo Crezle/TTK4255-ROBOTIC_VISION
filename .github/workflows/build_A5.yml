@@ -31,7 +31,12 @@ jobs:
           conda list
 
       - name: Run "A5, Task22.py"
-        run: python A5/python/task22.py
+        run: python A5/python/task2.py
+
+      - name: Run "A5, Camera Calibration"
+        run: |
+          python A5/python/calibrate_camera
+          python A5/python/show_calibration_results.py
 
       - name: Create A5 Code .ZIP
         run: python A5/python/create_submission_zip.py

@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from os.path import join
+import os
 
-folder = '../data/calibration'
+folder = 'A5/data/calibration'
 
 K           = np.loadtxt(join(folder, 'K.txt'))
 dc          = np.loadtxt(join(folder, 'dc.txt'))
@@ -37,6 +38,10 @@ print()
 print('The number after "+/-" is the standard deviation.')
 print()
 
+path = "A5/plots/"
+if not os.path.exists(path):
+    os.makedirs(path)
+
 plt.figure(figsize=(8,4))
 plt.subplot(121)
 plt.bar(range(len(mean_errors)), mean_errors)
@@ -55,4 +60,8 @@ plt.xlabel('u (pixels)')
 plt.ylabel('v (pixels)')
 plt.title('All corner detections')
 plt.tight_layout()
-plt.show()
+plt.savefig('A5/plots/calibration_results.png')
+if os.getenv("GITHUB_ACTIONS") != 'true':
+    plt.show()
+else:
+    plt.clf()
