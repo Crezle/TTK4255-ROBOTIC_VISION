@@ -47,7 +47,7 @@ for i,reprojection_error in enumerate(reprojection_errors):
 print('Average:  %5.02f px' % np.mean(reprojection_errors))
 print('Median:   %5.02f px' % np.median(reprojection_errors))
 quanser.draw(u, weights, image_number)
-plt.savefig('A6/plots/out_part1a_task13b.png')
+plt.savefig('A6/plots/out_part1a_task13a.png')
 if os.getenv("GITHUB_ACTIONS") != 'true':
     plt.show()
 else:

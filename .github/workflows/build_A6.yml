@@ -30,13 +30,11 @@ jobs:
           conda info
           conda list
 
-      - name: Run "A6, Task 1.3"
+      - name: Run "A6, Task 1.3 - 1.5"
         run: python A6/python/part1a.py
 
-    #   - name: Run "A6, Camera Calibration"
-    #     run: |
-    #       python A6/python/calibrate_camera.py
-    #       python A6/python/show_calibration_results.py
+      - name: Run "A6, Task 1.7"
+        run: python A6/python/part1b.py
 
     #   - name: Run "A6, Task4.py"
     #     run: python A6/python/task4.py

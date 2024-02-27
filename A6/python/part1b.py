@@ -7,8 +7,13 @@ import numpy as np
 from scipy.optimize import least_squares
 from quanser import Quanser
 from plot_all import *
+import os
 
-detections = np.loadtxt('../data/detections.txt')
+if not os.path.exists('A6/plots'):
+    os.makedirs('A6/plots')
+
+
+detections = np.loadtxt('A6/data/detections.txt')
 quanser = Quanser()
 
 p = np.array([0.0, 0.0, 0.0])
@@ -40,5 +45,15 @@ all_r = np.array(all_r)
 
 # Tip: See comment in plot_all.py regarding the last argument.
 plot_all(all_p, all_r, detections, subtract_initial_offset=False)
-plt.savefig('out_part1b.png')
-plt.show()
+plt.savefig('A6/plots/out_part1b_task17_False.png')
+if os.getenv('GITHUB_ACTIONS') != 'true':
+    plt.show()
+else:
+    plt.clf()
+    
+plot_all(all_p, all_r, detections, subtract_initial_offset=True)
+plt.savefig('A6/plots/out_part1b_task17_True.png')
+if os.getenv('GITHUB_ACTIONS') != 'true':
+    plt.show()
+else:
+    plt.clf()

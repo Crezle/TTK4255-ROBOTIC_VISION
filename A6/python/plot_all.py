@@ -32,12 +32,12 @@ def plot_all(all_p, all_r, detections, subtract_initial_offset):
     plt.xlabel('Reprojection error (pixels)')
     plt.title('Reprojection error distribution')
     plt.tight_layout()
-    plt.savefig('out_histogram.png')
+    plt.savefig(f'A6/plots/out_histogram_{subtract_initial_offset}.png')
 
     #
     # Figure: Comparison between logged encoder values and vision estimates
     #
-    logs       = np.loadtxt('../data/logs.txt')
+    logs       = np.loadtxt('A6/data/logs.txt')
     enc_time   = logs[:,0]
     enc_yaw    = logs[:,1]
     enc_pitch  = logs[:,2]
