@@ -36,8 +36,8 @@ jobs:
       - name: Run "A6, Task 1.7"
         run: python A6/python/part1b.py
 
-    #   - name: Run "A6, Task4.py"
-    #     run: python A6/python/task4.py
+      - name: Run "A6, Task 2.1 - 2.2"
+        run: python A6/python/part2.py
 
     #   - name: Create A6 Code .ZIP
     #     run: python A6/python/create_submission_zip.py
