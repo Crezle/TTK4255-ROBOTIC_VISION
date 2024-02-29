@@ -33,19 +33,25 @@ jobs:
       - name: Run "A6, Task 1.3 - 1.5"
         run: python A6/python/part1a.py
 
-      - name: Run "A6, Task 1.7"
+      - name: Run "A6, Task 1.7 and Task 3"
         run: python A6/python/part1b.py
 
       - name: Run "A6, Task 2.1 - 2.2"
         run: python A6/python/part2.py
 
-    #   - name: Create A6 Code .ZIP
-    #     run: python A6/python/create_submission_zip.py
-
       - name: Upload "A6" Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: A6-PlotsAndCode-${{ runner.os }}
+          name: A6-Artifacts-${{ runner.os }}
           path: |
             A6/plots/**
-            A6/*.zip
+
+      - name: Upload "A6" Code
+        uses: actions/upload-artifact@v4
+        with:
+          name: A6-Code-${{ runner.os }}
+          path: |
+            A6/python/*.py
+            !A6/python/plot_all.py
+            !A6/python/gauss_newton.py
+            !A6/python/common.py
