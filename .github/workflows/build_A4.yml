@@ -1,4 +1,4 @@
-run-name: Build code
+run-name: Build code for Assignment 4
 
 on:
   pull_request:

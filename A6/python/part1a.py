@@ -26,7 +26,7 @@ quanser = Quanser()
 # single argument (the parameter vector), and likewise for computing
 # the Jacobian. This can be done like this:
 
-# Task 1.3 ("a")
+### Task 1.3 ("a")
 image_number = 0
 
 weights = detections[image_number, ::3]
@@ -54,7 +54,7 @@ else:
     plt.clf()
 
 
-# Task 1.3 ("b")
+### Task 1.3 ("b")
 image_number = 40
 
 weights = detections[image_number, ::3]
@@ -81,7 +81,7 @@ if os.getenv("GITHUB_ACTIONS") != 'true':
 else:
     plt.clf()
 
-# Task 1.4
+### Task 1.4
 
 # Test case 1: 
 #   p0 equal to first image position
@@ -99,7 +99,7 @@ p0 = np.array([180.0, 180.0, 180.0])*np.pi/180
 p = gauss_newton(resfun, p0, 0.9, 10, xtol=0.01, print_progress=True)
 
 
-# Task 1.5 (Commented out to prevent error)
+### Task 1.5 (Commented out to prevent error)
 
 # image_number = 87
 

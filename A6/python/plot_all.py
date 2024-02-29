@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_all(all_p, all_r, detections, subtract_initial_offset):
+def plot_all(all_p, all_r, detections, subtract_initial_offset, task=""):
     """
     Tip: The logs have been time-synchronized with the image sequence,
     but there may be an offset between the motor angles and the vision
@@ -32,7 +32,7 @@ def plot_all(all_p, all_r, detections, subtract_initial_offset):
     plt.xlabel('Reprojection error (pixels)')
     plt.title('Reprojection error distribution')
     plt.tight_layout()
-    plt.savefig(f'A6/plots/out_histogram_{subtract_initial_offset}.png')
+    plt.savefig(f'A6/plots/out_histogram_{task}.png')
 
     #
     # Figure: Comparison between logged encoder values and vision estimates

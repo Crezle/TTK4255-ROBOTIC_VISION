@@ -32,6 +32,43 @@ class Quanser:
         # Compute the predicted image location of the markers
         p1 = self.arm_to_camera @ self.heli_points[:,:3]
         p2 = self.rotors_to_camera @ self.heli_points[:,3:]
+        
+        
+        # hat_u is a 2xM array of predicted marker locations.
+        hat_u = project(self.K, np.hstack([p1, p2]))
+        self.hat_u = hat_u # Save for use in draw()
+
+        r = ((hat_u - u)*weights).flatten()
+        
+        return r
+
+    def custom_residuals_A(self, u, weights, lengths, heli_points, p):
+        '''
+        Args:
+        u:          2xM array of detected marker locations
+        weights:    1D array of length M, where 1 indicates a valid detection
+        yaw:        Yaw angle in radians
+        pitch:      Pitch angle in radians
+        roll:       Roll angle in radians
+        
+        Returns:    1D array of length 2M, containing the residuals
+        '''
+        heli_points = np.vstack((heli_points.reshape(3, 7), np.ones(7))) 
+        # Compute the helicopter coordinate frames
+        base_to_platform = translate(lengths[0], lengths[0], 0.0)@rotate_z(p[0])
+        hinge_to_base    = translate(0.00, 0.00,  lengths[1])@rotate_y(p[1])
+        arm_to_hinge     = translate(0.00, 0.00, lengths[2])
+        rotors_to_arm    = translate(lengths[3], 0.00, lengths[4])@rotate_x(p[2])
+        self.base_to_camera   = self.platform_to_camera@base_to_platform
+        self.hinge_to_camera  = self.base_to_camera@hinge_to_base
+        self.arm_to_camera    = self.hinge_to_camera@arm_to_hinge
+        self.rotors_to_camera = self.arm_to_camera@rotors_to_arm
+
+        # Compute the predicted image location of the markers
+        p1 = self.arm_to_camera @ heli_points[:,:3]
+        p2 = self.rotors_to_camera @ heli_points[:,3:]
+        
+        
         # hat_u is a 2xM array of predicted marker locations.
         hat_u = project(self.K, np.hstack([p1, p2]))
         self.hat_u = hat_u # Save for use in draw()
