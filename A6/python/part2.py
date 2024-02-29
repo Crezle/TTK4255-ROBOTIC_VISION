@@ -6,9 +6,9 @@ import os
 from enum import Enum
 
 class Task(Enum):
-    TASK2_1 = "task2_1"
-    TASK2_2_RUN1 = "task2_2_run1"
-    TASK2_2_RUN2 = "task2_2_run2"
+    TASK2_1 = "task21"
+    TASK2_2_RUN1 = "task22_run1"
+    TASK2_2_RUN2 = "task22_run2"
 
 K = np.loadtxt('A6/data/K.txt')
 u = np.loadtxt('A6/data/platform_corners_image.txt')
