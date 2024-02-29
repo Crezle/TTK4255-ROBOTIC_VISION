@@ -1,4 +1,4 @@
-run-name: Building code for Assignment 6
+run-name: Build code for Assignment 6
 
 on:
   push:
