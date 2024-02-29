@@ -1,4 +1,4 @@
-run-name: Build code for Assignment 6
+run-name: Build code for Assignment 7
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
   push:
     paths:
-      - 'A6/**'
+      - 'A7/**'
 
 jobs:
   build:
