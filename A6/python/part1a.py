@@ -7,24 +7,8 @@ import os
 if not os.path.exists('A6/plots'):
     os.makedirs('A6/plots')
 
-# Tip:
-# "u" is a 2x7 array of detected marker locations.
-# It is the same size in every image, but some of its
-# entries may be invalid if the corresponding markers were
-# not detected. Which entries are valid is encoded in
-# the "weights" array, which is a 1D array of length 7.
 detections = np.loadtxt('A6/data/detections.txt')
 quanser = Quanser()
-
-# Tip:
-# Many optimization packages for Python expect you to provide a
-# callable function that computes the residuals, and optionally
-# the Jacobian, at a given parameter vector. The provided Gauss-Newton
-# implementation also follows this practice. However, because the
-# "residuals" method takes arguments other than the parameters, you
-# must first define a "lambda function wrapper" that takes only a
-# single argument (the parameter vector), and likewise for computing
-# the Jacobian. This can be done like this:
 
 ### Task 1.3 ("a")
 image_number = 0
@@ -81,7 +65,7 @@ if os.getenv("GITHUB_ACTIONS") != 'true':
 else:
     plt.clf()
 
-### Task 1.4
+##### Task 1.4 #####
 
 # Test case 1: 
 #   p0 equal to first image position
@@ -99,7 +83,8 @@ p0 = np.array([180.0, 180.0, 180.0])*np.pi/180
 p = gauss_newton(resfun, p0, 0.9, 10, xtol=0.01, print_progress=True)
 
 
-### Task 1.5 (Commented out to prevent error)
+##### Task 1.5 #####
+# (Commented out to prevent error)
 
 # image_number = 87
 

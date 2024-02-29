@@ -1,7 +1,3 @@
-# Note: You need to install Scipy to run this script. If you don't
-# want to install Scipy, then you can look for a different LM
-# implementation or write your own.
-
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import least_squares
@@ -22,9 +18,10 @@ class Model(Enum):
 if not os.path.exists('A6/plots'):
     os.makedirs('A6/plots')
 
-
 detections = np.loadtxt('A6/data/detections.txt')
 quanser = Quanser()
+
+##### Task 1.7 #####
 
 p = np.array([0.0, 0.0, 0.0])
 all_r = []
@@ -33,27 +30,15 @@ for i in range(len(detections)):
     weights = detections[i, ::3]
     u = np.vstack((detections[i, 1::3], detections[i, 2::3]))
 
-    # Tip: Lambda functions can be defined inside a for-loop, defining
-    # a different function in each iteration. Here we pass in the current
-    # image's "u" and "weights".
     resfun = lambda p : quanser.residuals(u, weights, p[0], p[1], p[2])
 
-    # Tip: Use the previous image's parameter estimate as initialization
     p = least_squares(resfun, x0=p, method='lm').x
 
-    # Collect residuals and parameter estimate for plotting later
     all_r.append(resfun(p))
     all_p.append(p)
 all_p = np.array(all_p)
 all_r = np.array(all_r)
 
-# Tip: This saves the estimated angles to a txt file.
-# This can be useful for Part 3.
-# np.savetxt('trajectory_from_part1.txt', all_p)
-# It can be loaded as
-# all_p = np.loadtxt('trajectory_from_part1.txt')
-
-# Tip: See comment in plot_all.py regarding the last argument.
 plot_all(all_p, all_r, detections, subtract_initial_offset=False, task="task17")
 plt.savefig('A6/plots/out_part1b_task17_False.png')
 if os.getenv('GITHUB_ACTIONS') != 'true':
@@ -129,9 +114,6 @@ for init_guess in InitGuess:
             weights = detections[i, ::3]
             u = np.vstack((detections[i, 1::3], detections[i, 2::3]))
 
-            # Tip: Lambda functions can be defined inside a for-loop, defining
-            # a different function in each iteration. Here we pass in the current
-            # image's "u" and "weights".
             if model == Model.A:
                 resfun = lambda p : quanser.residuals_A(u, weights, lengths=p_A[21:26], heli_points=p_A[0:21], p=p)
             elif model == Model.B:
@@ -139,22 +121,12 @@ for init_guess in InitGuess:
             else:
                 raise ValueError("Model not recognized")
 
-            # Tip: Use the previous image's parameter estimate as initialization
             p = least_squares(resfun, x0=p, method='lm').x
 
-            # Collect residuals and parameter estimate for plotting later
             all_r.append(resfun(p))
             all_p.append(p)
         all_p = np.array(all_p)
         all_r = np.array(all_r)
-
-        # Tip: This saves the estimated angles to a txt file.
-        # This can be useful for Part 3.
-        # np.savetxt('trajectory_from_part1.txt', all_p)
-        # It can be loaded as
-        # all_p = np.loadtxt('trajectory_from_part1.txt')
-
-        # Tip: See comment in plot_all.py regarding the last argument.
             
         plot_all(all_p, all_r, detections, subtract_initial_offset=True, task=f"task32A_{model}_{init_guess}")
         plt.savefig(f'A6/plots/out_part3_task32_{model}_{init_guess}.png')

@@ -44,10 +44,14 @@ class Quanser:
 
     def residuals_model_A(self, u, weights, p_A):
         '''
+        This function returns residuals of model A with respect to the detected marker locations.
+
         Args:
-        u:          2xM array of detected marker locations
-        weights:    1D array of length M, where 1 indicates a valid detection
-        p_A:        1D array of length 26, containing the parameters
+        u:          2xN array of detected marker locations
+        weights:    1D array of length N, where 1 indicates a valid detection
+        p_A:        1D array of length 26 + 3xN, containing the parameters
+
+        Returns:    1D array of length 2N, containing the residuals
         '''
         X = p_A[:21].reshape(3, 7)
         X = np.vstack((X, np.ones(7)))
@@ -67,8 +71,7 @@ class Quanser:
             
             p1 = arm_to_camera @ X[:,:3]
             p2 = rotors_to_camera @ X[:,3:]
-            
-            # hat_u is a 2xM array of predicted marker locations.
+
             hat_u[:, i*7:(i+1)*7] = project(self.K, np.hstack([p1, p2]))
 
         r = ((hat_u - u)*weights).flatten()
@@ -77,10 +80,14 @@ class Quanser:
 
     def residuals_model_B(self, u, weights, p_B):
         '''
+        This function returns residuals of model B with respect to the detected marker locations.
+
         Args:
-        u:          2xM array of detected marker locations
-        weights:    1D array of length M, where 1 indicates a valid detection
-        p_B:        1D array of length 39 + 3M, containing the parameters
+        u:          2xN array of detected marker locations
+        weights:    1D array of length N, where 1 indicates a valid detection
+        p_B:        1D array of length 39 + 3xN, containing the parameters
+        
+        Returns:    1D array of length 2M, containing the residuals
         '''
         X = p_B[:21].reshape(3, 7)
         X = np.vstack((X, np.ones(7)))
@@ -99,8 +106,7 @@ class Quanser:
             
             p1 = arm_to_camera @ X[:,:3]
             p2 = rotors_to_camera @ X[:,3:]
-            
-            # hat_u is a 2xM array of predicted marker locations.
+
             hat_u[:, i*7:(i+1)*7] = project(self.K, np.hstack([p1, p2]))
 
         r = ((hat_u - u)*weights).flatten()
@@ -109,15 +115,19 @@ class Quanser:
 
     def residuals_A(self, u, weights, lengths, heli_points, p):
         '''
+        This function creates a custom residual function based on model A.
+
         Args:
         u:          2xM array of detected marker locations
         weights:    1D array of length M, where 1 indicates a valid detection
-        p:          Euler angles in radians
+        lengths:    Lengths for T-matrix
+        heli_points:3x7 array of helicopter points
+        p:          Euler angles of helicopter in radians
         
         Returns:    1D array of length 2M, containing the residuals
         '''
         heli_points = np.vstack((heli_points.reshape(3, 7), np.ones(7))) 
-        # Compute the helicopter coordinate frames
+
         base_to_platform = translate(lengths[0], lengths[0], 0.0)@rotate_z(p[0])
         hinge_to_base    = translate(0.00, 0.00,  lengths[1])@rotate_y(p[1])
         arm_to_hinge     = translate(0.00, 0.00, lengths[2])
@@ -127,13 +137,10 @@ class Quanser:
         self.arm_to_camera    = self.hinge_to_camera@arm_to_hinge
         self.rotors_to_camera = self.arm_to_camera@rotors_to_arm
 
-        # Compute the predicted image location of the markers
         p1 = self.arm_to_camera @ heli_points[:,:3]
         p2 = self.rotors_to_camera @ heli_points[:,3:]
 
-        # hat_u is a 2xM array of predicted marker locations.
         hat_u = project(self.K, np.hstack([p1, p2]))
-        self.hat_u = hat_u # Save for use in draw()
 
         r = ((hat_u - u)*weights).flatten()
         
@@ -141,15 +148,20 @@ class Quanser:
 
     def residuals_B(self, u, weights, angles, lengths, heli_points, p):
         '''
+        This function creates a custom residual function based on model B.
+
         Args:
         u:          2xM array of detected marker locations
         weights:    1D array of length M, where 1 indicates a valid detection
-        p:          Euler angles in radians
+        angles:     Euler angles in radians for T-matrix
+        lengths:    Lengths for T-matrix
+        heli_points:3x7 array of helicopter points
+        p:          Euler angles of helicopter in radians
         
         Returns:    1D array of length 2M, containing the residuals
         '''
         heli_points = np.vstack((heli_points.reshape(3, 7), np.ones(7))) 
-        # Compute the helicopter coordinate frames
+
         base_to_platform = translate(lengths[0], lengths[1], lengths[2]) @ rotate_x(angles[0]) @ rotate_y(angles[1]) @ rotate_z(angles[2]) @ rotate_z(p[0])
         arm_to_base      = translate(lengths[3], lengths[4], lengths[5]) @ rotate_x(angles[3]) @ rotate_y(angles[4]) @ rotate_z(angles[5]) @ rotate_y(p[1])
         rotors_to_arm    = translate(lengths[6], lengths[7], lengths[8]) @ rotate_x(angles[6]) @ rotate_y(angles[7]) @ rotate_z(angles[8]) @ rotate_x(p[2])
@@ -157,13 +169,10 @@ class Quanser:
         arm_to_camera    = base_to_camera @ arm_to_base
         rotors_to_camera = arm_to_camera @ rotors_to_arm
 
-        # Compute the predicted image location of the markers
         p1 = arm_to_camera @ heli_points[:,:3]
         p2 = rotors_to_camera @ heli_points[:,3:]
 
-        # hat_u is a 2xM array of predicted marker locations.
         hat_u = project(self.K, np.hstack([p1, p2]))
-        self.hat_u = hat_u # Save for use in draw()
 
         r = ((hat_u - u)*weights).flatten()
         

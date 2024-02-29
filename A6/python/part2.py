@@ -15,9 +15,6 @@ u = np.loadtxt('A6/data/platform_corners_image.txt')
 X = np.loadtxt('A6/data/platform_corners_metric.txt')
 I = plt.imread('A6/quanser_image_sequence/data/video0000.jpg')
 
-# This is just an example. Replace these two lines
-# with your own code.
-
 def residuals(u, yaw, pitch, roll, z, y, x):
     
     rot_z = rotate_z(yaw)
@@ -31,8 +28,6 @@ def residuals(u, yaw, pitch, roll, z, y, x):
     r = (hat_u - u).flatten()
     
     return r
-
-
 
 init_guess_roll = np.deg2rad(90)
 init_guess_pitch = np.deg2rad(0)
@@ -70,10 +65,8 @@ for task in Task:
     plt.scatter(hat_u[0,:], hat_u[1,:], marker='.', color='red', label='Predicted')
     plt.legend()
 
-    # Tip: Draw the axes of a coordinate frame
     draw_frame(K, hat_T, scale=0.05, labels=True)
 
-    # Tip: To zoom in on the platform:
     plt.xlim([200, 500])
     plt.ylim([600, 350])
 
