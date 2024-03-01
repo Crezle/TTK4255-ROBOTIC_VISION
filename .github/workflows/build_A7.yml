@@ -4,7 +4,8 @@ on:
   pull_request:
   push:
     paths:
-      - 'A7/**'
+      - '**/A7/**'
+      - '**/build_A7.yml'
 
 jobs:
   build:
