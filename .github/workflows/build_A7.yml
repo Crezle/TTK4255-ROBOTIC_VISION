@@ -3,6 +3,8 @@ run-name: Build code for Assignment 7
 on:
   pull_request:
   push:
+    paths:
+      - 'A7/**'
 
 jobs:
   build:
