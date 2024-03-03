@@ -52,3 +52,4 @@ jobs:
           path: |
             A7/python/*.py
             !A7/python/common.py
+            !A7/python/task41_calc.py

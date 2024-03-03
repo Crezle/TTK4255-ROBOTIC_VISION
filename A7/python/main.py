@@ -76,5 +76,3 @@ for task in Task:
                     plt.show()
                 plt.clf()
                 plt.close()
-        # The figure should be saved in the data directory as out0000.png, etc.
-        # NB! generate_figure expects the predicted pixel coordinates as 'uv_from_H'.
