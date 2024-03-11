@@ -11,6 +11,7 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     defaults:
       run:
         shell: bash -l {0}
