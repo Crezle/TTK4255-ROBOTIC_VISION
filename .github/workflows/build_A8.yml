@@ -1,0 +1,53 @@
+run-name: Build code for Assignment 8
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    paths:
+      - 'A8/**'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          activate-environment: ttk4255
+          environment-file: environment.yml
+
+      - name: Check Conda Environment Status
+        run: |
+          conda info
+          conda list
+
+      - name: Run "A8, Main"
+        run: python A8/python/main.py
+
+      - name: Upload "A8" Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: A8-Artifacts-${{ runner.os }}
+          path: |
+            A8/plots/**
+
+      - name: Upload "A8" Code
+        uses: actions/upload-artifact@v4
+        with:
+          name: A8-Code-${{ runner.os }}
+          path: |
+            A8/python/*.py
