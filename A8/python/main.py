@@ -69,6 +69,7 @@ for task in Tasks:
             # Remove outliers
             u1 = u1[:, e < thresh]
             u2 = u2[:, e < thresh]
+            print(f"Num inliers: {np.sum(e < thresh)}\n")
             
             e = epipolar_distance(F_from_E(E, K), u1, u2)
             plt.hist(e, bins=100, color='k')
